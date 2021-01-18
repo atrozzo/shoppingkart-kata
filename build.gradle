@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+}
+
+group 'com.simple.shoppingcart'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation("org.hamcrest:hamcrest:2.1")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
+
+test {
+
+    afterTest { desc, result ->
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+    useJUnitPlatform()
+}
+
+
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
+compileJava {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+tasks.withType(JavaCompile) {
+    // Force compatibility for Java 11
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
